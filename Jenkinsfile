@@ -2,11 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        choice(
-            name: 'APP_TARGET',
-            choices: ['mern-frontend', 'mern-backend-helloservice'],
-            description: 'Select which app to build and push'
-        )
+        string(name: 'APP_TARGET', defaultValue: '', description: 'Leave blank to auto-detect based on changed folders')
     }
 
     environment {
@@ -18,6 +14,7 @@ pipeline {
     }
 
     stages {
+
         stage('Clone App Code') {
             steps {
                 dir('app-code') {
@@ -26,20 +23,49 @@ pipeline {
             }
         }
 
+        stage('Detect Changed Folder') {
+            when {
+                expression { return !params.APP_TARGET?.trim() }
+            }
+            steps {
+                dir('app-code') {
+                    script {
+                        def changedFiles = sh(
+                            script: "git diff-tree --no-commit-id --name-only -r \$(git rev-parse HEAD)",
+                            returnStdout: true
+                        ).trim().split("\n")
+
+                        echo "Changed files: ${changedFiles}"
+
+                        if (changedFiles.any { it.startsWith("frontend/") }) {
+                            env.APP_TARGET = "mern-frontend"
+                        } else if (changedFiles.any { it.startsWith("backend/helloService/") }) {
+                            env.APP_TARGET = "mern-backend-helloservice"
+                        } else {
+                            error("No recognized folder changes detected. Please check your commit.")
+                        }
+
+                        echo "Auto-detected APP_TARGET: ${env.APP_TARGET}"
+                    }
+                }
+            }
+        }
+
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerContext = ''
-                    if (params.APP_TARGET == 'mern-frontend') {
-                        dockerContext = 'frontend'
-                    } else if (params.APP_TARGET == 'mern-backend-helloservice') {
-                        dockerContext = 'backend/helloService'
+                    def target = params.APP_TARGET?.trim() ? params.APP_TARGET : env.APP_TARGET
+                    def dockerContext = target == 'mern-frontend' ? 'frontend' :
+                                        target == 'mern-backend-helloservice' ? 'backend/helloService' : ''
+
+                    if (!dockerContext) {
+                        error "Invalid APP_TARGET value: '${target}'"
                     }
 
                     echo "Building Docker image from: app-code/${dockerContext}"
 
                     sh """
-                        docker build -t ${params.APP_TARGET}:${IMAGE_TAG} app-code/${dockerContext}
+                        docker build -t ${target}:${IMAGE_TAG} app-code/${dockerContext}
                     """
                 }
             }
@@ -47,12 +73,12 @@ pipeline {
 
         stage('Login to ECR') {
             steps {
-                withCredentials([[
-                    $class: 'AmazonWebServicesCredentialsBinding',
-                    credentialsId: 'tanuj-aws-ecr-creds'
+                withCredentials([[ 
+                    $class: 'AmazonWebServicesCredentialsBinding', 
+                    credentialsId: 'tanuj-aws-ecr-creds' 
                 ]]) {
                     sh """
-                        echo 'Trying to log in to AWS ECR in region ${env.AWS_REGION} for account ${env.AWS_ACCOUNT_ID}'
+                        echo 'Logging into AWS ECR in region ${env.AWS_REGION}'
                         aws ecr get-login-password --region ${env.AWS_REGION} | \
                         docker login --username AWS --password-stdin ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com
                     """
@@ -63,9 +89,11 @@ pipeline {
         stage('Tag & Push Docker Image') {
             steps {
                 script {
-                    def ecr_uri = "${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com/${params.APP_TARGET}"
+                    def target = params.APP_TARGET?.trim() ? params.APP_TARGET : env.APP_TARGET
+                    def ecr_uri = "${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com/${target}"
+
                     sh """
-                        docker tag ${params.APP_TARGET}:${IMAGE_TAG} ${ecr_uri}:${IMAGE_TAG}
+                        docker tag ${target}:${IMAGE_TAG} ${ecr_uri}:${IMAGE_TAG}
                         docker push ${ecr_uri}:${IMAGE_TAG}
                     """
                 }
