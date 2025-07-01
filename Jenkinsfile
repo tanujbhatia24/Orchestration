@@ -2,13 +2,12 @@ pipeline {
     agent any
 
     parameters {
-    choice(
-        name: 'APP_TARGET',
-        choices: ['', 'mern-frontend', 'mern-backend-helloservice'],
-        description: 'Select which app to build and push. Leave blank to build all apps on changes.'
+        choice(
+            name: 'APP_TARGET',
+            choices: [' ', 'mern-frontend', 'mern-backend-helloservice'],
+            description: 'Select which app to build and push. Leave blank to build all apps on changes.'
         )
-   }
-
+    }
 
     environment {
         AWS_REGION = 'ap-south-1'
@@ -41,8 +40,6 @@ pipeline {
                         ).trim().split("\n")
 
                         echo "Changed files: ${changedFiles}"
-
-                        // You can put any condition here if needed, but for now we just decide to build both
                         env.BUILD_ALL = 'true'
                     }
                 }
@@ -72,6 +69,8 @@ pipeline {
                         targets = [params.APP_TARGET.trim()]
                     } else if (env.BUILD_ALL == 'true') {
                         targets = ['mern-frontend', 'mern-backend-helloservice']
+                    } else {
+                        error("No target app selected and no relevant changes detected.")
                     }
 
                     for (app in targets) {
