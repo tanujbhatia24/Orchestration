@@ -2,7 +2,12 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'APP_TARGET', defaultValue: '', description: 'Leave blank to auto-build all apps on any change. Set to specific app name to build only that one.')
+        choice(
+        string(name: 'APP_TARGET', defaultValue: '', description: '...'),
+        name: 'APP_TARGET',
+        choices: ['mern-frontend', 'mern-backend-helloservice'],
+        description: '...'
+        )
     }
 
     environment {
