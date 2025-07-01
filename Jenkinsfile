@@ -56,18 +56,17 @@ pipeline {
                         aws ecr get-login-password --region $AWS_REGION | \
                         docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
                     """
+                }
+            }
         }
-    }
-}
-
 
         stage('Tag & Push Docker Image') {
             steps {
                 script {
                     def ecr_uri = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${params.APP_TARGET}"
                     sh """
-                    docker tag ${params.APP_TARGET}:${IMAGE_TAG} ${ecr_uri}:${IMAGE_TAG}
-                    docker push ${ecr_uri}:${IMAGE_TAG}
+                        docker tag ${params.APP_TARGET}:${IMAGE_TAG} ${ecr_uri}:${IMAGE_TAG}
+                        docker push ${ecr_uri}:${IMAGE_TAG}
                     """
                 }
             }
