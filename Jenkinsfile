@@ -13,29 +13,33 @@ pipeline {
         AWS_REGION = 'ap-south-1'
         AWS_ACCOUNT_ID = '975050024946'
         IMAGE_TAG = "${GIT_COMMIT}"
+        CODE_REPO = 'https://github.com/tanujbhatia24/SampleMERNwithMicroservices.git'
+        CODE_BRANCH = 'main'
     }
 
     stages {
-        stage('Checkout Code') {
+        stage('Clone App Code') {
             steps {
-                git branch: 'main', url: 'https://github.com/tanujbhatia24/SampleMERNwithMicroservices.git'
+                dir('app-code') {
+                    git branch: "${env.CODE_BRANCH}", url: "${env.CODE_REPO}"
+                }
             }
         }
 
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerContext = ""
-
+                    def dockerContext = ''
                     if (params.APP_TARGET == 'mern-frontend') {
                         dockerContext = 'frontend'
                     } else if (params.APP_TARGET == 'mern-backend-helloservice') {
                         dockerContext = 'backend/helloService'
                     }
 
-                    echo "Building image for ${params.APP_TARGET} from ${dockerContext}"
+                    echo "Building Docker image from: app-code/${dockerContext}"
+
                     sh """
-                        docker build -t ${params.APP_TARGET}:${IMAGE_TAG} ${dockerContext}
+                        docker build -t ${params.APP_TARGET}:${IMAGE_TAG} app-code/${dockerContext}
                     """
                 }
             }
