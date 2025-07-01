@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'APP_TARGET', defaultValue: '', description: 'Leave blank to auto-detect based on changed folders')
+        string(name: 'APP_TARGET', defaultValue: '', description: 'Leave blank to auto-build all apps on any change. Set to specific app name to build only that one.')
     }
 
     environment {
@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Detect Changed Folder') {
+        stage('Detect Changed Files') {
             when {
                 expression { return !params.APP_TARGET?.trim() }
             }
@@ -37,36 +37,9 @@ pipeline {
 
                         echo "Changed files: ${changedFiles}"
 
-                        if (changedFiles.any { it.startsWith("frontend/") }) {
-                            env.APP_TARGET = "mern-frontend"
-                        } else if (changedFiles.any { it.startsWith("backend/helloService/") }) {
-                            env.APP_TARGET = "mern-backend-helloservice"
-                        } else {
-                            error("No recognized folder changes detected. Please check your commit.")
-                        }
-
-                        echo "Auto-detected APP_TARGET: ${env.APP_TARGET}"
+                        // You can put any condition here if needed, but for now we just decide to build both
+                        env.BUILD_ALL = 'true'
                     }
-                }
-            }
-        }
-
-        stage('Build Docker Image') {
-            steps {
-                script {
-                    def target = params.APP_TARGET?.trim() ? params.APP_TARGET : env.APP_TARGET
-                    def dockerContext = target == 'mern-frontend' ? 'frontend' :
-                                        target == 'mern-backend-helloservice' ? 'backend/helloService' : ''
-
-                    if (!dockerContext) {
-                        error "Invalid APP_TARGET value: '${target}'"
-                    }
-
-                    echo "Building Docker image from: app-code/${dockerContext}"
-
-                    sh """
-                        docker build -t ${target}:${IMAGE_TAG} app-code/${dockerContext}
-                    """
                 }
             }
         }
@@ -86,16 +59,36 @@ pipeline {
             }
         }
 
-        stage('Tag & Push Docker Image') {
+        stage('Build and Push Docker Images') {
             steps {
                 script {
-                    def target = params.APP_TARGET?.trim() ? params.APP_TARGET : env.APP_TARGET
-                    def ecr_uri = "${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com/${target}"
+                    def targets = []
+                    if (params.APP_TARGET?.trim()) {
+                        targets = [params.APP_TARGET.trim()]
+                    } else if (env.BUILD_ALL == 'true') {
+                        targets = ['mern-frontend', 'mern-backend-helloservice']
+                    }
 
-                    sh """
-                        docker tag ${target}:${IMAGE_TAG} ${ecr_uri}:${IMAGE_TAG}
-                        docker push ${ecr_uri}:${IMAGE_TAG}
-                    """
+                    for (app in targets) {
+                        def dockerContext = app == 'mern-frontend' ? 'frontend' :
+                                            app == 'mern-backend-helloservice' ? 'backend/helloService' : null
+
+                        if (!dockerContext) {
+                            error "Unknown app target: ${app}"
+                        }
+
+                        def image = "${app}:${IMAGE_TAG}"
+                        def ecr_uri = "${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com/${app}"
+
+                        echo "Building: ${image} from context: app-code/${dockerContext}"
+                        sh "docker build -t ${image} app-code/${dockerContext}"
+
+                        echo "Tagging and pushing: ${ecr_uri}:${IMAGE_TAG}"
+                        sh """
+                            docker tag ${image} ${ecr_uri}:${IMAGE_TAG}
+                            docker push ${ecr_uri}:${IMAGE_TAG}
+                        """
+                    }
                 }
             }
         }
