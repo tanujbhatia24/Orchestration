@@ -2,13 +2,13 @@ pipeline {
     agent any
 
     parameters {
-        choice(
-        string(name: 'APP_TARGET', defaultValue: '', description: '...'),
+    choice(
         name: 'APP_TARGET',
-        choices: ['mern-frontend', 'mern-backend-helloservice'],
-        description: '...'
+        choices: ['', 'mern-frontend', 'mern-backend-helloservice'],
+        description: 'Select which app to build and push. Leave blank to build all apps on changes.'
         )
-    }
+   }
+
 
     environment {
         AWS_REGION = 'ap-south-1'
