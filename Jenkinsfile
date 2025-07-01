@@ -5,29 +5,33 @@ pipeline {
         choice(
             name: 'APP_TARGET',
             choices: [' ', 'mern-frontend', 'mern-backend-helloservice'],
-            description: 'Select which app to build and push. Leave blank to build all apps on changes.'
+            description: 'Select which app to build and push. Leave blank to auto-detect changed apps.'
         )
     }
 
     environment {
         AWS_REGION = 'ap-south-1'
         AWS_ACCOUNT_ID = '975050024946'
-        IMAGE_TAG = "${GIT_COMMIT}"
         CODE_REPO = 'https://github.com/tanujbhatia24/SampleMERNwithMicroservices.git'
         CODE_BRANCH = 'main'
     }
 
     stages {
-
         stage('Clone App Code') {
             steps {
                 dir('app-code') {
                     git branch: "${env.CODE_BRANCH}", url: "${env.CODE_REPO}"
+                    script {
+                        // Explicitly set commit ID for tagging images
+                        env.GIT_COMMIT = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
+                        env.IMAGE_TAG = env.GIT_COMMIT
+                        echo "Git Commit: ${env.GIT_COMMIT}"
+                    }
                 }
             }
         }
 
-        stage('Detect Changed Files') {
+        stage('Detect Changed Apps') {
             when {
                 expression { return !params.APP_TARGET?.trim() }
             }
@@ -35,12 +39,25 @@ pipeline {
                 dir('app-code') {
                     script {
                         def changedFiles = sh(
-                            script: "git diff-tree --no-commit-id --name-only -r \$(git rev-parse HEAD)",
+                            script: "git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}",
                             returnStdout: true
                         ).trim().split("\n")
 
                         echo "Changed files: ${changedFiles}"
-                        env.BUILD_ALL = 'true'
+
+                        def targets = []
+                        if (changedFiles.any { it.startsWith("frontend/") }) {
+                            targets << "mern-frontend"
+                        }
+                        if (changedFiles.any { it.startsWith("backend/helloService/") }) {
+                            targets << "mern-backend-helloservice"
+                        }
+
+                        if (targets) {
+                            env.BUILD_TARGETS = targets.join(',')
+                        } else {
+                            error("No relevant app changes detected. Skipping build.")
+                        }
                     }
                 }
             }
@@ -61,16 +78,17 @@ pipeline {
             }
         }
 
-        stage('Build and Push Docker Images') {
+        stage('Build & Push Docker Images') {
             steps {
                 script {
                     def targets = []
+
                     if (params.APP_TARGET?.trim()) {
                         targets = [params.APP_TARGET.trim()]
-                    } else if (env.BUILD_ALL == 'true') {
-                        targets = ['mern-frontend', 'mern-backend-helloservice']
+                    } else if (env.BUILD_TARGETS) {
+                        targets = env.BUILD_TARGETS.split(',')
                     } else {
-                        error("No target app selected and no relevant changes detected.")
+                        error("No build targets available.")
                     }
 
                     for (app in targets) {
@@ -81,17 +99,17 @@ pipeline {
                             error "Unknown app target: ${app}"
                         }
 
-                        def image = "${app}:${IMAGE_TAG}"
+                        def image = "${app}:${env.IMAGE_TAG}"
                         def ecr_uri = "${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com/${app}"
 
-                        echo "Building: ${image} from context: app-code/${dockerContext}"
+                        echo "Building Docker image for ${app} from context: app-code/${dockerContext}"
                         sh "docker build -t ${image} app-code/${dockerContext}"
 
-                        echo "Tagging and pushing: ${ecr_uri}:${IMAGE_TAG}"
-                        sh """
-                            docker tag ${image} ${ecr_uri}:${IMAGE_TAG}
-                            docker push ${ecr_uri}:${IMAGE_TAG}
-                        """
+                        echo "Tagging image: ${ecr_uri}:${env.IMAGE_TAG}"
+                        sh "docker tag ${image} ${ecr_uri}:${env.IMAGE_TAG}"
+
+                        echo "Pushing image to ECR: ${ecr_uri}:${env.IMAGE_TAG}"
+                        sh "docker push ${ecr_uri}:${env.IMAGE_TAG}"
                     }
                 }
             }
