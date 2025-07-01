@@ -52,9 +52,9 @@ pipeline {
                     credentialsId: 'tanuj-aws-ecr-creds'
                 ]]) {
                     sh """
-                        echo 'Trying to log in to AWS ECR in region $AWS_REGION for account $AWS_ACCOUNT_ID'
-                        aws ecr get-login-password --region $AWS_REGION | \
-                        docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+                        echo 'Trying to log in to AWS ECR in region ${env.AWS_REGION} for account ${env.AWS_ACCOUNT_ID}'
+                        aws ecr get-login-password --region ${env.AWS_REGION} | \
+                        docker login --username AWS --password-stdin ${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com
                     """
                 }
             }
@@ -63,8 +63,8 @@ pipeline {
         stage('Tag & Push Docker Image') {
             steps {
                 script {
+                    def ecr_uri = "${env.AWS_ACCOUNT_ID}.dkr.ecr.${env.AWS_REGION}.amazonaws.com/${params.APP_TARGET}"
                     sh """
-                        def ecr_uri = "${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com/${params.APP_TARGET}"
                         docker tag ${params.APP_TARGET}:${IMAGE_TAG} ${ecr_uri}:${IMAGE_TAG}
                         docker push ${ecr_uri}:${IMAGE_TAG}
                     """
