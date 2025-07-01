@@ -51,6 +51,7 @@ pipeline {
                     $class: 'AmazonWebServicesCredentialsBinding',
                     credentialsId: 'tanuj-aws-ecr-creds'
                 ]]) {
+                    sh "echo 'Trying to log in to AWS ECR in region $AWS_REGION for account $AWS_ACCOUNT_ID'"
                     sh """
                         aws ecr get-login-password | \
                         docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
