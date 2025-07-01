@@ -22,10 +22,10 @@ pipeline {
                 dir('app-code') {
                     git branch: "${env.CODE_BRANCH}", url: "${env.CODE_REPO}"
                     script {
-                        // Explicitly set commit ID for tagging images
-                        env.GIT_COMMIT = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
-                        env.IMAGE_TAG = env.GIT_COMMIT
-                        echo "Git Commit: ${env.GIT_COMMIT}"
+                        def realCommit = sh(script: "git rev-parse HEAD", returnStdout: true).trim()
+                        echo "SampleMERNwithMicroservices Commit: ${realCommit}"
+                        env.REPO_COMMIT = realCommit
+                        env.IMAGE_TAG = realCommit
                     }
                 }
             }
@@ -39,7 +39,7 @@ pipeline {
                 dir('app-code') {
                     script {
                         def changedFiles = sh(
-                            script: "git diff-tree --no-commit-id --name-only -r ${env.GIT_COMMIT}",
+                            script: "git diff-tree --no-commit-id --name-only -r ${env.REPO_COMMIT}",
                             returnStdout: true
                         ).trim().split("\n")
 
@@ -65,10 +65,12 @@ pipeline {
 
         stage('Login to ECR') {
             steps {
-                withCredentials([[ 
-                    $class: 'AmazonWebServicesCredentialsBinding', 
-                    credentialsId: 'tanuj-aws-ecr-creds' 
-                ]]) {
+                withCredentials([
+                    [
+                        $class: 'AmazonWebServicesCredentialsBinding',
+                        credentialsId: 'tanuj-aws-ecr-creds'
+                    ]
+                ]) {
                     sh """
                         echo 'Logging into AWS ECR in region ${env.AWS_REGION}'
                         aws ecr get-login-password --region ${env.AWS_REGION} | \
@@ -105,11 +107,13 @@ pipeline {
                         echo "Building Docker image for ${app} from context: app-code/${dockerContext}"
                         sh "docker build -t ${image} app-code/${dockerContext}"
 
-                        echo "Tagging image: ${ecr_uri}:${env.IMAGE_TAG}"
-                        sh "docker tag ${image} ${ecr_uri}:${env.IMAGE_TAG}"
-
-                        echo "Pushing image to ECR: ${ecr_uri}:${env.IMAGE_TAG}"
-                        sh "docker push ${ecr_uri}:${env.IMAGE_TAG}"
+                        echo "Tagging and pushing: ${ecr_uri}:${env.IMAGE_TAG} and latest"
+                        sh """
+                            docker tag ${image} ${ecr_uri}:${env.IMAGE_TAG}
+                            docker tag ${image} ${ecr_uri}:latest
+                            docker push ${ecr_uri}:${env.IMAGE_TAG}
+                            docker push ${ecr_uri}:latest
+                        """
                     }
                 }
             }
