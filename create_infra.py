@@ -61,7 +61,7 @@ def create_launch_template(sg_id):
     lt = ec2.create_launch_template(
         LaunchTemplateName='tanujWebAppLT',
         LaunchTemplateData={
-            'ImageId': 'ami-0f918f7e67a3323f0',  # replace with your AMI
+            'ImageId': 'ami-0d03cb826412c6b0f',  # replace with your AMI
             'InstanceType': 't2.micro',
             'SecurityGroupIds': [sg_id],
             'KeyName': 'tanuj-ec2-key',  # replace with your key name
@@ -92,9 +92,34 @@ def create_asg(launch_template_id, subnet_id):
     )
     print("Created Auto Scaling Group")
 
+def create_internet_gateway(vpc_id):
+    igw = ec2.create_internet_gateway()
+    igw_id = igw['InternetGateway']['InternetGatewayId']
+    ec2.attach_internet_gateway(InternetGatewayId=igw_id, VpcId=vpc_id)
+    print(f"Created and Attached IGW: {igw_id}")
+    return igw_id
+
+def create_route_table(vpc_id, subnet_id, igw_id):
+    route_table = ec2.create_route_table(VpcId=vpc_id)
+    rt_id = route_table['RouteTable']['RouteTableId']
+    
+    # Add route to IGW (0.0.0.0/0)
+    ec2.create_route(
+        RouteTableId=rt_id,
+        DestinationCidrBlock='0.0.0.0/0',
+        GatewayId=igw_id
+    )
+
+    # Associate with the subnet
+    ec2.associate_route_table(SubnetId=subnet_id, RouteTableId=rt_id)
+    print(f"Created Route Table {rt_id} and associated it with Subnet")
+
+
 def main():
     vpc_id = create_vpc()
     subnet_id = create_subnet(vpc_id)
+    igw_id = create_internet_gateway(vpc_id)
+    create_route_table(vpc_id, subnet_id, igw_id)
     sg_id = create_security_group(vpc_id)
     launch_template_id = create_launch_template(sg_id)
     create_asg(launch_template_id, subnet_id)

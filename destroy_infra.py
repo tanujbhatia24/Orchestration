@@ -14,12 +14,29 @@ def get_vpc_id_by_sg(sg_name):
         return response['SecurityGroups'][0]['VpcId']
     return None
 
+def get_instance_ids_from_asg(asg_name):
+    response = autoscaling.describe_auto_scaling_groups(AutoScalingGroupNames=[asg_name])
+    instance_ids = []
+    for group in response['AutoScalingGroups']:
+        for inst in group['Instances']:
+            instance_ids.append(inst['InstanceId'])
+    return instance_ids
+
 def delete_asg():
     try:
         autoscaling.delete_auto_scaling_group(AutoScalingGroupName=ASG_NAME, ForceDelete=True)
         print("Deleted Auto Scaling Group")
     except Exception as e:
         print(f"Error deleting ASG: {e}")
+
+def wait_for_instance_termination(instance_ids):
+    if instance_ids:
+        print("Waiting for EC2 instances to terminate...")
+        waiter = ec2.get_waiter('instance_terminated')
+        waiter.wait(InstanceIds=instance_ids)
+        print("All instances terminated.")
+    else:
+        print("No EC2 instances to wait for.")
 
 def delete_launch_template():
     try:
@@ -39,16 +56,19 @@ def delete_igws(vpc_id):
 def delete_route_tables(vpc_id):
     rts = ec2.describe_route_tables(Filters=[{'Name': 'vpc-id', 'Values': [vpc_id]}])
     for rt in rts['RouteTables']:
-        assoc_main = any(assoc.get('Main', False) for assoc in rt.get('Associations', []))
-        if not assoc_main:
+        is_main = any(assoc.get('Main', False) for assoc in rt.get('Associations', []))
+        if not is_main:
             ec2.delete_route_table(RouteTableId=rt['RouteTableId'])
             print(f"Deleted Route Table {rt['RouteTableId']}")
 
 def delete_subnets(vpc_id):
     subnets = ec2.describe_subnets(Filters=[{'Name': 'vpc-id', 'Values': [vpc_id]}])
     for subnet in subnets['Subnets']:
-        ec2.delete_subnet(SubnetId=subnet['SubnetId'])
-        print(f"Deleted Subnet {subnet['SubnetId']}")
+        try:
+            ec2.delete_subnet(SubnetId=subnet['SubnetId'])
+            print(f"Deleted Subnet {subnet['SubnetId']}")
+        except Exception as e:
+            print(f"Error deleting Subnet {subnet['SubnetId']}: {e}")
 
 def delete_network_interfaces(vpc_id):
     enis = ec2.describe_network_interfaces(Filters=[{'Name': 'vpc-id', 'Values': [vpc_id]}])
@@ -83,8 +103,10 @@ def main():
         print("VPC ID not found. Exiting.")
         return
 
+    instance_ids = get_instance_ids_from_asg(ASG_NAME)
+
     delete_asg()
-    time.sleep(10)  # Ensure ASG is terminated
+    wait_for_instance_termination(instance_ids)
 
     delete_launch_template()
     delete_igws(vpc_id)
