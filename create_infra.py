@@ -15,14 +15,14 @@ def create_subnet(vpc_id):
     subnet = ec2.create_subnet(
         CidrBlock='10.0.1.0/24',
         VpcId=vpc_id,
-        AvailabilityZone='us-east-1a')
+        AvailabilityZone='ap-south-1a')
     subnet_id = subnet['Subnet']['SubnetId']
     print(f"Created Subnet: {subnet_id}")
     return subnet_id
 
 def create_security_group(vpc_id):
     sg = ec2.create_security_group(
-        GroupName='WebSG',
+        GroupName='tanujWebSG',
         Description='Allow HTTP and SSH',
         VpcId=vpc_id)
     sg_id = sg['GroupId']
@@ -40,7 +40,7 @@ def create_security_group(vpc_id):
 
 def create_launch_template(sg_id):
     lt = ec2.create_launch_template(
-        LaunchTemplateName='WebAppLT',
+        LaunchTemplateName='tanujWebAppLT',
         LaunchTemplateData={
             'ImageId': 'ami-0f918f7e67a3323f0',  # replace with your AMI
             'InstanceType': 't2.micro',
@@ -54,7 +54,7 @@ def create_launch_template(sg_id):
 
 def create_asg(launch_template_id, subnet_id):
     autoscaling.create_auto_scaling_group(
-        AutoScalingGroupName='WebAppASG',
+        AutoScalingGroupName='tanujWebAppASG',
         LaunchTemplate={
             'LaunchTemplateId': launch_template_id,
             'Version': '$Latest'
@@ -66,7 +66,7 @@ def create_asg(launch_template_id, subnet_id):
         Tags=[
             {
                 'Key': 'Name',
-                'Value': 'WebAppInstance',
+                'Value': 'tanujWebAppInstance',
                 'PropagateAtLaunch': True
             }
         ]
