@@ -12,6 +12,6 @@ Snapshot
 **Destroying INFRA**<br>
 ![image](https://github.com/user-attachments/assets/914ec6ca-65e9-4639-ab9f-4eee5b10c3bb)<br>
 
-- Deploying Backend Services<br>
-<img width="325" alt="image" src="https://github.com/user-attachments/assets/58d77aba-3e55-4646-8b2d-64a05867a011" /><br>
+- Deploying Backend & Frontend on EC2<br>
+<img width="650" alt="image" src="https://github.com/user-attachments/assets/268f0dd5-2f52-44d2-81a1-c7dfb3d5829f" /><br>
 
