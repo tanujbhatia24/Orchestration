@@ -10,6 +10,8 @@ Snapshot
 ![image](https://github.com/user-attachments/assets/63fb579f-fc1f-4462-9b49-622eca34b012)<br>
 ![image](https://github.com/user-attachments/assets/eb3fcc37-1ba9-4000-849b-4d7278ead891)<br>
 **Destroying INFRA**<br>
-![image](https://github.com/user-attachments/assets/914ec6ca-65e9-4639-ab9f-4eee5b10c3bb)
+![image](https://github.com/user-attachments/assets/914ec6ca-65e9-4639-ab9f-4eee5b10c3bb)<br>
 
- 
+- Deploying Backend Services<br>
+<img width="325" alt="image" src="https://github.com/user-attachments/assets/58d77aba-3e55-4646-8b2d-64a05867a011" /><br>
+
