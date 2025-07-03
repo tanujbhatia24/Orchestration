@@ -50,8 +50,18 @@ Snapshot
 ![image](https://github.com/user-attachments/assets/d724a184-064d-435c-ba2a-0f55d5cf02bf)<br>
 
 - EKS <br>
-![image](https://github.com/user-attachments/assets/50878d9e-7fe5-4f14-a6c7-b7adab2c6c28)<br>
-![image](https://github.com/user-attachments/assets/e49205a1-d555-415f-938d-3719bcde3351)<br>
+<img width="677" alt="image" src="https://github.com/user-attachments/assets/2b5d1f32-870d-40cd-8330-759681f0f47e" /><br>
+<img width="473" alt="image" src="https://github.com/user-attachments/assets/4f260c0f-f939-4f95-b039-a2c2cf47f148" /><br>
+backend<br>
+<img width="438" alt="image" src="https://github.com/user-attachments/assets/3ab60033-a0a6-4898-bd98-b616058058b8" /><br>
+<img width="272" alt="image" src="https://github.com/user-attachments/assets/90227bb4-2c39-43a5-b0ef-5791600b2fa2" /><br>
+frontend<br>
+<img width="650" alt="image" src="https://github.com/user-attachments/assets/97b36a5f-0468-4693-b7ab-3b1bdf1e4faa" /><br>
+<img width="443" alt="image" src="https://github.com/user-attachments/assets/98530185-f02d-4463-ac36-b2ab3ee1773c" /><br>
+
+
+
+
 
 
 
