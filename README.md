@@ -7,6 +7,7 @@ Snapshot
 <img width="704" alt="image" src="https://github.com/user-attachments/assets/52899d7a-d45c-4d90-abb4-3de080b5eaf8" /><br>
 <img width="662" alt="image" src="https://github.com/user-attachments/assets/f10e9b5d-db5f-41e0-a286-be908c7f56bf" /><br>
 <img width="738" alt="image" src="https://github.com/user-attachments/assets/e6ffe1fd-8dda-4941-83f9-0f6dab1320dd" /><br>
+<img width="845" alt="image" src="https://github.com/user-attachments/assets/a281e83f-facd-4b40-adf0-627bee07f8f7" /><br>
 
 **Destroying INFRA**<br>
 ![image](https://github.com/user-attachments/assets/914ec6ca-65e9-4639-ab9f-4eee5b10c3bb)<br>
@@ -18,4 +19,5 @@ Snapshot
 - EC2 IAM role<br>
 <img width="815" alt="image" src="https://github.com/user-attachments/assets/1829e504-6acc-4199-95f1-f34cf9cc7038" /><br>
 
-
+- Terminated one Backend and ASG created a new one immediately<br>
+<img width="672" alt="image" src="https://github.com/user-attachments/assets/47ce3e55-8841-47dd-a88e-fdb1bfd8de3c" /><br>
