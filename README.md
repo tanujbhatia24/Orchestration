@@ -57,7 +57,9 @@ frontend<br>
 <img width="443" alt="image" src="https://github.com/user-attachments/assets/98530185-f02d-4463-ac36-b2ab3ee1773c" /><br>
 
 **Destroying INFRA**<br>
-<img width="323" alt="image" src="https://github.com/user-attachments/assets/4cf0b68e-cc84-453e-b747-42f14b581833" />
+<img width="323" alt="image" src="https://github.com/user-attachments/assets/4cf0b68e-cc84-453e-b747-42f14b581833" /><br>
+<img width="742" alt="image" src="https://github.com/user-attachments/assets/f9bca2eb-0eb8-4e1c-b105-890eb5d75980" /><br>
+
 
 
 
