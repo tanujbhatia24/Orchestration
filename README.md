@@ -21,3 +21,19 @@ Snapshot
 
 - Terminated one Backend and ASG created a new one immediately<br>
 <img width="672" alt="image" src="https://github.com/user-attachments/assets/47ce3e55-8841-47dd-a88e-fdb1bfd8de3c" /><br>
+
+- ECS IMAGE<br>
+![image](https://github.com/user-attachments/assets/46e0b996-dca0-4318-ac1d-5d2594ee41e9)<br>
+![image](https://github.com/user-attachments/assets/53a0fc20-50e0-4b13-92ee-086a42aaadb2)<br>
+
+- Docker container running status<br>
+![image](https://github.com/user-attachments/assets/57bae206-f3e6-4a96-9f7e-01fcad78defe)<br>
+<img width="174" alt="image" src="https://github.com/user-attachments/assets/d9465dd2-0c91-461f-b683-1635828ee3de" /><br>
+
+![image](https://github.com/user-attachments/assets/374c32a0-2990-4f72-9ab9-16947b2ca362)<br>
+<img width="182" alt="image" src="https://github.com/user-attachments/assets/af0ad436-7faa-491d-b7c0-05d6a21de6d0" /><br>
+
+![image](https://github.com/user-attachments/assets/e9f78d23-4bc3-4766-813e-d53a12a17b1c)<br>
+<img width="632" alt="image" src="https://github.com/user-attachments/assets/e7c77a7b-3af5-4fba-8536-44f59ad0c94b" /><br>
+
+
