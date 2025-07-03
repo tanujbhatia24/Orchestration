@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mern-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mern-frontend
+  template:
+    metadata:
+      labels:
+        app: mern-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: 975050024946.dkr.ecr.ap-south-1.amazonaws.com/mern-frontend:latest
+          ports:
+            - containerPort: 3000
