@@ -6,7 +6,7 @@ Snapshot
 <img width="325" alt="image" src="https://github.com/user-attachments/assets/929a836f-2a9f-4b86-b0d6-703e1790831a" /><br>
 <img width="704" alt="image" src="https://github.com/user-attachments/assets/52899d7a-d45c-4d90-abb4-3de080b5eaf8" /><br>
 <img width="662" alt="image" src="https://github.com/user-attachments/assets/f10e9b5d-db5f-41e0-a286-be908c7f56bf" /><br>
-<img width="738" alt="image" src="https://github.com/user-attachments/assets/e6ffe1fd-8dda-4941-83f9-0f6dab1320dd" /><br>
+<img width="755" alt="image" src="https://github.com/user-attachments/assets/f88ca665-18bc-4ce1-a919-ddb8b1d89d48" /><br>
 <img width="845" alt="image" src="https://github.com/user-attachments/assets/a281e83f-facd-4b40-adf0-627bee07f8f7" /><br>
 
 **Destroying INFRA**<br>
