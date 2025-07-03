@@ -45,6 +45,18 @@ Snapshot
 ![image](https://github.com/user-attachments/assets/095dad42-f0fb-462f-a099-9b8a7cfc0e69)<br>
 ![image](https://github.com/user-attachments/assets/29ea9a52-0048-4984-8b3c-ab7ba21dfe42)<br>
 
+- Backup of Db using Lambda Functions<br>
+![image](https://github.com/user-attachments/assets/f84c41dc-bf4f-4d9d-9dd5-a4ab7387a9b1)<br>
+![image](https://github.com/user-attachments/assets/d724a184-064d-435c-ba2a-0f55d5cf02bf)<br>
+
+- EKS <br>
+![image](https://github.com/user-attachments/assets/50878d9e-7fe5-4f14-a6c7-b7adab2c6c28)<br>
+![image](https://github.com/user-attachments/assets/e49205a1-d555-415f-938d-3719bcde3351)<br>
+
+
+
+
+
 
 
 
