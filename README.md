@@ -42,6 +42,8 @@ Snapshot
 <img width="329" alt="image" src="https://github.com/user-attachments/assets/a1e87d25-0eff-4b1f-a363-581df660bf00" /><br>
 
 - DNS setup<br>
+![image](https://github.com/user-attachments/assets/095dad42-f0fb-462f-a099-9b8a7cfc0e69)<br>
+![image](https://github.com/user-attachments/assets/29ea9a52-0048-4984-8b3c-ab7ba21dfe42)<br>
 
 
 
