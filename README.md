@@ -36,4 +36,13 @@ Snapshot
 ![image](https://github.com/user-attachments/assets/e9f78d23-4bc3-4766-813e-d53a12a17b1c)<br>
 <img width="632" alt="image" src="https://github.com/user-attachments/assets/e7c77a7b-3af5-4fba-8536-44f59ad0c94b" /><br>
 
+- Load Balance & Target Group for backend service<br>
+<img width="841" alt="image" src="https://github.com/user-attachments/assets/9413eb3d-9733-4e7b-9778-1c32d2bd977c" /><br>
+![image](https://github.com/user-attachments/assets/ae5e360f-09a3-4378-86ac-130c1d528484)<br>
+<img width="329" alt="image" src="https://github.com/user-attachments/assets/a1e87d25-0eff-4b1f-a363-581df660bf00" /><br>
+
+- DNS setup<br>
+
+
+
 
