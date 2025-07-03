@@ -9,9 +9,6 @@ Snapshot
 <img width="755" alt="image" src="https://github.com/user-attachments/assets/f88ca665-18bc-4ce1-a919-ddb8b1d89d48" /><br>
 <img width="845" alt="image" src="https://github.com/user-attachments/assets/a281e83f-facd-4b40-adf0-627bee07f8f7" /><br>
 
-**Destroying INFRA**<br>
-![image](https://github.com/user-attachments/assets/914ec6ca-65e9-4639-ab9f-4eee5b10c3bb)<br>
-
 - Backend & Frontend on EC2s<br>
 <img width="658" alt="image" src="https://github.com/user-attachments/assets/453c666c-4b02-40b8-ba61-210e3fc4366a" /><br>
 <img width="656" alt="image" src="https://github.com/user-attachments/assets/c40970d2-de55-421c-b2fb-cf17acbcb27e" /><br>
@@ -59,7 +56,8 @@ frontend<br>
 <img width="650" alt="image" src="https://github.com/user-attachments/assets/97b36a5f-0468-4693-b7ab-3b1bdf1e4faa" /><br>
 <img width="443" alt="image" src="https://github.com/user-attachments/assets/98530185-f02d-4463-ac36-b2ab3ee1773c" /><br>
 
-
+**Destroying INFRA**<br>
+<img width="323" alt="image" src="https://github.com/user-attachments/assets/4cf0b68e-cc84-453e-b747-42f14b581833" />
 
 
 
