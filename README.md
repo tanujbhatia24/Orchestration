@@ -49,6 +49,10 @@ Snapshot
 ![image](https://github.com/user-attachments/assets/f84c41dc-bf4f-4d9d-9dd5-a4ab7387a9b1)<br>
 ![image](https://github.com/user-attachments/assets/d724a184-064d-435c-ba2a-0f55d5cf02bf)<br>
 
+- EKS <br>
+![image](https://github.com/user-attachments/assets/50878d9e-7fe5-4f14-a6c7-b7adab2c6c28)<br>
+![image](https://github.com/user-attachments/assets/e49205a1-d555-415f-938d-3719bcde3351)<br>
+
 
 
 
