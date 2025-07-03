@@ -4,9 +4,10 @@ import time
 ec2 = boto3.client('ec2')
 autoscaling = boto3.client('autoscaling')
 
-ASG_NAME = 'tanujWebAppASG'
-LAUNCH_TEMPLATE_NAME = 'tanujWebAppLT'
+ASG_NAME = 'tanujbackendASG'
+LAUNCH_TEMPLATE_NAME = 'tanujbackendLT'
 SECURITY_GROUP_NAME = 'tanujWebSG'
+FRONTEND_TAG = 'tanujFrontendInstance'
 
 def get_vpc_id_by_sg(sg_name):
     response = ec2.describe_security_groups(Filters=[{'Name': 'group-name', 'Values': [sg_name]}])
@@ -22,21 +23,39 @@ def get_instance_ids_from_asg(asg_name):
             instance_ids.append(inst['InstanceId'])
     return instance_ids
 
-def delete_asg():
-    try:
-        autoscaling.delete_auto_scaling_group(AutoScalingGroupName=ASG_NAME, ForceDelete=True)
-        print("Deleted Auto Scaling Group")
-    except Exception as e:
-        print(f"Error deleting ASG: {e}")
+def get_frontend_instance_ids():
+    response = ec2.describe_instances(Filters=[
+        {'Name': 'tag:Name', 'Values': [FRONTEND_TAG]},
+        {'Name': 'instance-state-name', 'Values': ['pending', 'running', 'stopping', 'stopped']}
+    ])
+    instance_ids = []
+    for reservation in response['Reservations']:
+        for instance in reservation['Instances']:
+            instance_ids.append(instance['InstanceId'])
+    return instance_ids
+
+def terminate_instances(instance_ids):
+    if instance_ids:
+        ec2.terminate_instances(InstanceIds=instance_ids)
+        print(f"Terminating EC2 instances: {instance_ids}")
+    else:
+        print("No EC2 instances found to terminate.")
 
 def wait_for_instance_termination(instance_ids):
     if instance_ids:
         print("Waiting for EC2 instances to terminate...")
         waiter = ec2.get_waiter('instance_terminated')
         waiter.wait(InstanceIds=instance_ids)
-        print("All instances terminated.")
+        print("All EC2 instances terminated.")
     else:
         print("No EC2 instances to wait for.")
+
+def delete_asg():
+    try:
+        autoscaling.delete_auto_scaling_group(AutoScalingGroupName=ASG_NAME, ForceDelete=True)
+        print("Deleted Auto Scaling Group")
+    except Exception as e:
+        print(f"Error deleting ASG: {e}")
 
 def delete_launch_template():
     try:
@@ -56,10 +75,21 @@ def delete_igws(vpc_id):
 def delete_route_tables(vpc_id):
     rts = ec2.describe_route_tables(Filters=[{'Name': 'vpc-id', 'Values': [vpc_id]}])
     for rt in rts['RouteTables']:
-        is_main = any(assoc.get('Main', False) for assoc in rt.get('Associations', []))
-        if not is_main:
-            ec2.delete_route_table(RouteTableId=rt['RouteTableId'])
-            print(f"Deleted Route Table {rt['RouteTableId']}")
+        associations = rt.get('Associations', [])
+        is_main = any(assoc.get('Main', False) for assoc in associations)
+
+        # Skip the main route table
+        if is_main:
+            continue
+
+        # Disassociate all associated subnets first
+        for assoc in associations:
+            if 'RouteTableAssociationId' in assoc:
+                ec2.disassociate_route_table(AssociationId=assoc['RouteTableAssociationId'])
+
+        ec2.delete_route_table(RouteTableId=rt['RouteTableId'])
+        print(f"✅ Deleted Route Table {rt['RouteTableId']}")
+
 
 def delete_subnets(vpc_id):
     subnets = ec2.describe_subnets(Filters=[{'Name': 'vpc-id', 'Values': [vpc_id]}])
@@ -103,11 +133,16 @@ def main():
         print("VPC ID not found. Exiting.")
         return
 
-    instance_ids = get_instance_ids_from_asg(ASG_NAME)
+    asg_instances = get_instance_ids_from_asg(ASG_NAME)
+    frontend_instances = get_frontend_instance_ids()
 
+    # Terminate both frontend EC2 and backend ASG
     delete_asg()
-    wait_for_instance_termination(instance_ids)
+    time.sleep(10)
+    terminate_instances(frontend_instances)
+    wait_for_instance_termination(asg_instances + frontend_instances)
 
+    # Delete rest of infra
     delete_launch_template()
     delete_igws(vpc_id)
     delete_route_tables(vpc_id)
