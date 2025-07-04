@@ -66,12 +66,10 @@ pipeline {
 
         stage('Login to ECR') {
             steps {
-                withCredentials([
-                    [
-                        $class: 'AmazonWebServicesCredentialsBinding',
-                        credentialsId: 'tanuj-aws-ecr-creds'
-                    ]
-                ]) {
+                withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'tanuj-aws-ecr-creds'
+                ]]) {
                     sh """
                         echo 'Logging into AWS ECR in region ${env.AWS_REGION}'
                         aws ecr get-login-password --region ${env.AWS_REGION} | \
@@ -119,7 +117,9 @@ pipeline {
                 }
             }
         }
-        post {
+    }
+
+    post {
         success {
             sh '''
             aws sns publish \
@@ -137,8 +137,6 @@ pipeline {
               --subject "Jenkins ECR Deployment Failed" \
               --message "Jenkins build failed at $(date)"
             '''
-        }
-
         }
     }
 }
