@@ -65,7 +65,7 @@ docker push <ecr-url>
 - NOTE: Used GIT instead of CodeComiit.
 
 ### Step 5: Jenkins CI/CD
-- Jenkins installed on EC2 OR user HeroVired Jenkins
+- Jenkins installed on EC2 OR use HeroVired Jenkins
 - Jobs:
   - Build & push Docker images
   - Trigger on CodeCommit webhook
@@ -93,6 +93,7 @@ docker push <ecr-url>
 
 ---
 ## CI/CD Pipeline
+Use Jenkinsfile for CI/CD
 ```mermaid
 graph TD
 A[Developer Commit] --> B[Github Repo]
