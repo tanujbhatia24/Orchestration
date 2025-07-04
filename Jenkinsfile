@@ -121,22 +121,22 @@ pipeline {
         }
         post {
         success {
-            sh """
+            sh '''
             aws sns publish \
               --region ${AWS_REGION} \
               --topic-arn "${TOPIC_ARN}" \
               --subject "Jenkins ECR Deployment Success" \
               --message "Jenkins pushed image *${IMAGE_TAG}* to ECR at $(date)"
-            """
+            '''
         }
         failure {
-            sh """
+            sh '''
             aws sns publish \
               --region ${AWS_REGION} \
               --topic-arn "${TOPIC_ARN}" \
               --subject "Jenkins ECR Deployment Failed" \
               --message "Jenkins build failed at $(date)"
-            """
+            '''
         }
 
     }
