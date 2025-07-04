@@ -101,6 +101,7 @@ B --> C[Jenkins Triggered]
 C --> D[Build Docker Images]
 D --> E[Push to Amazon ECR]
 E --> F[Deploy to EC2/EKS]
+F --> F[Success/Failure Notification]
 ```
 
 ---
