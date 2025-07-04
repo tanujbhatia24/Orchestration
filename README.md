@@ -163,7 +163,7 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 - **Terminated one Backend and ASG created a new one immediately**<br>
 <img width="672" alt="image" src="https://github.com/user-attachments/assets/47ce3e55-8841-47dd-a88e-fdb1bfd8de3c" /><br>
 
-- **Jenkins pipeline for ECS**<br>
+- **Jenkins pipeline and ECS**<br>
   - Frontend<br>
 ![image](https://github.com/user-attachments/assets/b3790e2c-ef71-44f8-9830-ce688867713e)<br>
 ![image](https://github.com/user-attachments/assets/46e0b996-dca0-4318-ac1d-5d2594ee41e9)<br>
