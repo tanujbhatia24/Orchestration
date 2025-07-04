@@ -35,7 +35,7 @@ This project shows how to build and deploy a production-grade MERN stack app wit
 | DNS                  | Cloudflare               |
 | Kubernetes (optional)| Amazon EKS, Minikube             |
 | Monitoring           | CloudWatch             |
-| Notifications        | SNS + Lambda + Slack   |
+| Notifications        | SES + SNS + Lambda + Telegram   |
 | Backup               | MongoDB dump via Lambda to S3 |
 
 ---
@@ -63,7 +63,7 @@ docker push <ecr-url>
 ```
 
 ### Step 4:  Set Up CodeCommit/Github repo
-- NOTE: Used GIT instead of CodeComiit.
+- NOTE: Used GIT instead of CodeComiit
 
 ### Step 5: Jenkins CI/CD
 - Jenkins installed on EC2 OR use HeroVired Jenkins
@@ -117,9 +117,9 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 
 ---
 ## Monitoring & Logging
-- CloudWatch Logs: Collect logs from EC2.
+- CloudWatch Logs: Collect logs from EC2
 - CloudWatch Alarms: Trigger alerts on high CPU etc.
-- CloudWatch Dashboards: Optional for visualization.
+- CloudWatch Dashboards: Optional for visualization
 
 ---
 ## ChatOps Integration (SNS and SES)
@@ -156,9 +156,6 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 - **Backend & Frontend on EC2s**<br>
 <img width="658" alt="image" src="https://github.com/user-attachments/assets/453c666c-4b02-40b8-ba61-210e3fc4366a" /><br>
 <img width="656" alt="image" src="https://github.com/user-attachments/assets/c40970d2-de55-421c-b2fb-cf17acbcb27e" /><br>
-
-- **EC2 IAM role**<br>
-<img width="815" alt="image" src="https://github.com/user-attachments/assets/1829e504-6acc-4199-95f1-f34cf9cc7038" /><br>
 
 - **Terminated one Backend and ASG created a new one immediately**<br>
 <img width="672" alt="image" src="https://github.com/user-attachments/assets/47ce3e55-8841-47dd-a88e-fdb1bfd8de3c" /><br>
