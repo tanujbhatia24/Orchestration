@@ -215,3 +215,9 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 ---
 ## Author
 Tanuj Bhatia
+
+---
+## License
+This project is intended for educational and demonstration purposes. You are welcome to use and adapt it as a reference; however, please ensure that your work represents your own understanding and is not reproduced verbatim.
+
+---
