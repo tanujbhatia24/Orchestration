@@ -14,6 +14,7 @@ pipeline {
         AWS_ACCOUNT_ID = '975050024946'
         CODE_REPO = 'https://github.com/tanujbhatia24/SampleMERNwithMicroservices.git'
         CODE_BRANCH = 'main'
+        TOPIC_ARN = 'arn:aws:sns:ap-south-1:975050024946:deployment-success'
     }
 
     stages {
@@ -118,5 +119,25 @@ pipeline {
                 }
             }
         }
+        post {
+        success {
+            sh """
+            aws sns publish \
+              --region ${AWS_REGION} \
+              --topic-arn "${TOPIC_ARN}" \
+              --subject "Jenkins ECR Deployment Success" \
+              --message "Jenkins pushed image *${IMAGE_TAG}* to ECR at $(date)"
+            """
+        }
+        failure {
+            sh """
+            aws sns publish \
+              --region ${AWS_REGION} \
+              --topic-arn "${TOPIC_ARN}" \
+              --subject "Jenkins ECR Deployment Failed" \
+              --message "Jenkins build failed at $(date)"
+            """
+        }
+
     }
 }
