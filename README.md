@@ -1,4 +1,117 @@
-# Orchestration
+# MERN Stack Deployment on AWS with Docker, Jenkins, EKS & DevOps Automation
+This project demonstrates how to deploy a full-stack MERN (MongoDB, Express, React, Node.js) application using AWS infrastructure, Docker containers, CI/CD with Jenkins, Kubernetes (EKS), and automation using Python Boto3 scripts. It includes infrastructure-as-code, monitoring, backup automation, and ChatOps.
+
+---
+## Project Overview
+This project shows how to build and deploy a production-grade MERN stack app with:
+- Containerization using Docker
+- Version control using AWS CodeCommit
+- CI/CD using Jenkins and Amazon ECR
+- Infrastructure provisioning with Boto3 (Python)
+- EKS (Kubernetes) deployment with Helm
+- Monitoring, backups, and notifications using CloudWatch, Lambda, S3, and SNS
+
+---
+## Tech Stack
+- **Frontend:** React (Dockerized)
+- **Backend:** Node.js + Express (Dockerized)
+- **Database:** MongoDB
+- **Infrastructure:** AWS (EC2, VPC, ECR, S3, Route 53, ALB, Lambda, EKS)
+- **CI/CD:** Jenkins, CodeCommit
+- **IaC:** Python + Boto3
+- **Monitoring:** CloudWatch
+- **Notifications:** SNS, SES, Slack (ChatOps)
+
+---
+## Infrastructure Components
+| Component            | Service                |
+|---------------------|------------------------|
+| Source Control       | AWS CodeCommit         |
+| CI/CD                | Jenkins on EC2         |
+| Containers           | Docker, Amazon ECR     |
+| Compute              | EC2, Auto Scaling Group|
+| Load Balancer        | Application Load Balancer (ALB) |
+| Networking           | VPC, Subnets, Security Groups |
+| DNS                  | Route 53               |
+| Kubernetes (optional)| Amazon EKS             |
+| Monitoring           | CloudWatch             |
+| Notifications        | SNS + Lambda + Slack   |
+| Backup               | MongoDB dump via Lambda to S3 |
+
+---
+## Setup Guide
+### Step 1: AWS CLI & Boto3 Setup
+```bash
+aws configure
+pip install boto3
+```
+### Step 2: Dockerize the MERN App
+- Dockerfile for frontend
+- Dockerfile for backend
+
+### Step 3: Push Docker Images to ECR
+```bash
+# Create repos
+aws ecr create-repository --repository-name <repo-name>
+
+# Authenticate & push
+aws ecr get-login-password | docker login --username AWS <ecr-url>
+docker build -t <name> .
+docker tag <name> <ecr-url>
+docker push <ecr-url>
+```
+
+### Step 4:  Set Up CodeCommit/Github repo
+- NOTE: Used GIT instead of CodeComiit.
+
+### Step 5: Jenkins CI/CD
+- Jenkins installed on EC2 OR user HeroVired Jenkins
+- Jobs:
+  - Build & push Docker images
+  - Trigger on CodeCommit webhook
+
+### Step 6: Infrastructure Provisioning with Boto3
+- Python scripts to create:
+  - VPC, subnets
+  - Security groups
+  - EC2 Launch Templates
+  - Auto Scaling Group for backend
+  - ELB
+
+### Step 7: Deploy Frontend and Backend
+- Backend on EC2 (Auto Scaling Group)
+- Frontend on EC2
+- Use user_data in EC2 to run Docker container
+
+### Step 8: Set Up Load Balancer and DNS
+- ALB routes traffic to backend
+- Route 53/Cloudflare maps domain to ALB
+
+### Step 9: MongoDB Backup with Lambda
+- Lambda dumps MongoDB → uploads to S3
+- Triggered daily via CloudWatch Events
+
+---
+## CI/CD Pipeline
+```mermaid
+graph TD
+A[Developer Commit] --> B[Github Repo]
+B --> C[Jenkins Triggered]
+C --> D[Build Docker Images]
+D --> E[Push to Amazon ECR]
+E --> F[Deploy to EC2/EKS]
+```
+
+---
+## Infrastructure as Code (IaC)
+All infrastructure is defined using Python + Boto3 scripts:
+- create_infra.py
+- lambda-mongo-backup/function.zip
+- destroy_infra.py
+  
+Run with: python create_infra.py
+Run with: python destroy_infra.py
+Use lambda-mongo-backup/function.zip to create lambda DB backup function
 
 Snapshot
 - Infrastructure as Code (IaC) with Boto3<br>
