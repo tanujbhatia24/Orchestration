@@ -101,7 +101,7 @@ B --> C[Jenkins Triggered]
 C --> D[Build Docker Images]
 D --> E[Push to Amazon ECR]
 E --> F[Deploy to EC2/EKS]
-F --> G[Success OR Failure Notification]
+F --> G[Success OR Failure Notify]
 ```
 ---
 ## Infrastructure as Code (IaC)
