@@ -123,7 +123,7 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 ---
 ## ChatOps Integration
 - SNS topics for deployment events
-- Lambda notifies Slack/MS Teams/Telegram via webhook
+- Lambda notifies Slack/MS Teams/Telegram via webhook [You can use lambda_SNS.py]
 - SES configured for email alerts (e.g., failed backups)
 
 ---
