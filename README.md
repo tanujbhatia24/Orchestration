@@ -26,7 +26,7 @@ This project shows how to build and deploy a production-grade MERN stack app wit
 ## Infrastructure Components
 | Component            | Service                |
 |---------------------|------------------------|
-| Source Control       | AWS CodeCommit         |
+| Source Control       | GitHub         |
 | CI/CD                | Jenkins on EC2         |
 | Containers           | Docker, Amazon ECR     |
 | Compute              | EC2, Auto Scaling Group|
@@ -46,6 +46,7 @@ aws configure
 pip install boto3
 ```
 ### Step 2: Dockerize the MERN App
+- App Source code repo URL - "https://github.com/tanujbhatia24/SampleMERNwithMicroservices.git"
 - Dockerfile for frontend
 - Dockerfile for backend
 
