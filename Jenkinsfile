@@ -121,6 +121,10 @@ pipeline {
 
     post {
         success {
+            withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'tanuj-aws-ecr-creds'
+                ]]){
             sh '''
             aws sns publish \
               --region ${AWS_REGION} \
@@ -128,8 +132,13 @@ pipeline {
               --subject "Jenkins ECR Deployment Success" \
               --message "Jenkins pushed image *${IMAGE_TAG}* to ECR at $(date)"
             '''
+                }
         }
         failure {
+            withCredentials([[
+                    $class: 'AmazonWebServicesCredentialsBinding',
+                    credentialsId: 'tanuj-aws-ecr-creds'
+                ]]){
             sh '''
             aws sns publish \
               --region ${AWS_REGION} \
@@ -137,6 +146,7 @@ pipeline {
               --subject "Jenkins ECR Deployment Failed" \
               --message "Jenkins build failed at $(date)"
             '''
+            }
         }
     }
 }
