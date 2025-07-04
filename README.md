@@ -222,7 +222,7 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 
 ---
 ## Author
-Tanuj Bhatia
+Tanuj Bhatia<br>
 tanujbhatia0001@gmail.com
 
 ---
