@@ -113,6 +113,37 @@ Run with: python create_infra.py
 Run with: python destroy_infra.py
 Use lambda-mongo-backup/function.zip to create lambda DB backup function
 
+---
+## Monitoring & Logging
+- CloudWatch Logs: Collect logs from EC2.
+- CloudWatch Alarms: Trigger alerts on high CPU etc.
+- CloudWatch Dashboards: Optional for visualization.
+
+---
+## ChatOps Integration
+- SNS topics for deployment events
+- Lambda notifies Slack/MS Teams/Telegram via webhook
+- SES configured for email alerts (e.g., failed backups)
+
+---
+## Security Best Practices
+- Use IAM Roles instead of hardcoded credentials
+- Open only required ports in security groups (e.g., 80, 22)
+- Use HTTPS with SSL (ACM + ALB)
+- Keep secrets in AWS Secrets Manager or SSM Parameter Store
+
+---
+## Final Validation Checklist
+- Frontend accessible via domain
+- Backend responds correctly
+- Docker images present in ECR
+- CI/CD triggers on commits
+- Logs visible in CloudWatch
+- Backup stored in S3
+- Notifications received
+
+---
+ 
 Snapshot
 - Infrastructure as Code (IaC) with Boto3<br>
 **Creation of INFRA**<br>
@@ -178,14 +209,6 @@ frontend<br>
 <img width="323" alt="image" src="https://github.com/user-attachments/assets/4cf0b68e-cc84-453e-b747-42f14b581833" /><br>
 <img width="742" alt="image" src="https://github.com/user-attachments/assets/f9bca2eb-0eb8-4e1c-b105-890eb5d75980" /><br>
 
-
-
-
-
-
-
-
-
-
-
-
+---
+## Author
+Tanuj Bhatia
