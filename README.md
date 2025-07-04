@@ -90,7 +90,6 @@ docker push <ecr-url>
 
 ### Step 9: MongoDB Backup with Lambda
 - Lambda dumps MongoDB → uploads to S3
-- Triggered daily via CloudWatch Events
 
 ---
 ## CI/CD Pipeline
