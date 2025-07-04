@@ -101,9 +101,8 @@ B --> C[Jenkins Triggered]
 C --> D[Build Docker Images]
 D --> E[Push to Amazon ECR]
 E --> F[Deploy to EC2/EKS]
-F --> F[Success/Failure Notification]
+F --> G[Success OR Failure Notification]
 ```
-
 ---
 ## Infrastructure as Code (IaC)
 All infrastructure is defined using Python + Boto3 scripts:
