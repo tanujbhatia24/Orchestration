@@ -122,10 +122,10 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 - CloudWatch Dashboards: Optional for visualization.
 
 ---
-## ChatOps Integration
+## ChatOps Integration (SNS and SES)
 - SNS topics for deployment events
-- Lambda notifies Slack/MS Teams/Telegram via webhook [You can use lambda_SNS.py]
-- SES configured for email alerts (e.g., failed backups)
+- Lambda notifies Slack/MS Teams/Telegram via webhook [You can use lambda_notify.py]
+- SES configured for email alerts for deployment events
 
 ---
 ## Security Best Practices
@@ -191,10 +191,10 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 - **EKS** <br>
 <img width="677" alt="image" src="https://github.com/user-attachments/assets/2b5d1f32-870d-40cd-8330-759681f0f47e" /><br>
 <img width="473" alt="image" src="https://github.com/user-attachments/assets/4f260c0f-f939-4f95-b039-a2c2cf47f148" /><br>
-  - backend<br>
+  - Backend<br>
 <img width="438" alt="image" src="https://github.com/user-attachments/assets/3ab60033-a0a6-4898-bd98-b616058058b8" /><br>
 <img width="272" alt="image" src="https://github.com/user-attachments/assets/90227bb4-2c39-43a5-b0ef-5791600b2fa2" /><br>
-  - frontend<br>
+  - Frontend<br>
 <img width="650" alt="image" src="https://github.com/user-attachments/assets/97b36a5f-0468-4693-b7ab-3b1bdf1e4faa" /><br>
 <img width="443" alt="image" src="https://github.com/user-attachments/assets/98530185-f02d-4463-ac36-b2ab3ee1773c" /><br>
 
@@ -203,10 +203,19 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 <img width="896" alt="image" src="https://github.com/user-attachments/assets/f8e68132-ae55-4fef-bf76-d23f2b1a8ad8" /><br>
 ![image](https://github.com/user-attachments/assets/0f5426c0-7bf6-42d5-a3c6-e1ed2712daed)<br>
 
-- **ChatOps Integration (Telegram)**<br>
-<img width="752" alt="image" src="https://github.com/user-attachments/assets/40205d9a-783a-438e-81cc-cbaf94e8d7da" /><br>
+- **ChatOps Integration (SNS, SES, Telegram)**<br>
+  - Lambda_notify.py<br>
+![image](https://github.com/user-attachments/assets/3acaa8fe-89c9-445b-9f5d-1d2affe5de62)<br>
+  - Jenkins pipeline<br>
 ![image](https://github.com/user-attachments/assets/09bd5834-1183-450d-9de5-69c956f5293a)<br>
+  - SNS <br>
+![image](https://github.com/user-attachments/assets/6e507835-92fa-493f-9523-d9012e828cf0)<br>
+  - Telegram notification<br>
 <img width="956" alt="image" src="https://github.com/user-attachments/assets/2cd68738-fc79-4f9e-905f-f787e7a3fd46" /><br>
+  - SES<br>
+![image](https://github.com/user-attachments/assets/897db4aa-e5a4-4ead-9079-5bdc37212d30)<br>
+![image](https://github.com/user-attachments/assets/7bffa200-88fe-4624-a65e-ef4d15b6886b)<br>
+![image](https://github.com/user-attachments/assets/a7a96723-bdc9-424c-85da-268e85645652)<br>
 
 - **Destroying INFRA**<br>
 <img width="323" alt="image" src="https://github.com/user-attachments/assets/4cf0b68e-cc84-453e-b747-42f14b581833" /><br>
