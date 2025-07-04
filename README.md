@@ -32,8 +32,8 @@ This project shows how to build and deploy a production-grade MERN stack app wit
 | Compute              | EC2, Auto Scaling Group|
 | Load Balancer        | Application Load Balancer (ALB) |
 | Networking           | VPC, Subnets, Security Groups |
-| DNS                  | Route 53               |
-| Kubernetes (optional)| Amazon EKS             |
+| DNS                  | Cloudflare               |
+| Kubernetes (optional)| Amazon EKS, Minikube             |
 | Monitoring           | CloudWatch             |
 | Notifications        | SNS + Lambda + Slack   |
 | Backup               | MongoDB dump via Lambda to S3 |
