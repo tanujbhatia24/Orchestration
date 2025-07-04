@@ -56,9 +56,14 @@ frontend<br>
 <img width="650" alt="image" src="https://github.com/user-attachments/assets/97b36a5f-0468-4693-b7ab-3b1bdf1e4faa" /><br>
 <img width="443" alt="image" src="https://github.com/user-attachments/assets/98530185-f02d-4463-ac36-b2ab3ee1773c" /><br>
 
+- Cloudwatch Monitoring, Alerting & Logging<br> 
+<img width="680" alt="image" src="https://github.com/user-attachments/assets/33f17c2c-e358-46c0-97ff-47862ac204e7" /><br>
+<img width="896" alt="image" src="https://github.com/user-attachments/assets/f8e68132-ae55-4fef-bf76-d23f2b1a8ad8" /><br>
+
 **Destroying INFRA**<br>
 <img width="323" alt="image" src="https://github.com/user-attachments/assets/4cf0b68e-cc84-453e-b747-42f14b581833" /><br>
 <img width="742" alt="image" src="https://github.com/user-attachments/assets/f9bca2eb-0eb8-4e1c-b105-890eb5d75980" /><br>
+
 
 
 
