@@ -203,6 +203,7 @@ Use lambda-mongo-backup/function.zip to create lambda DB backup function.<br>
 ![image](https://github.com/user-attachments/assets/0f5426c0-7bf6-42d5-a3c6-e1ed2712daed)<br>
 
 - **ChatOps Integration (Telegram)**<br>
+<img width="752" alt="image" src="https://github.com/user-attachments/assets/40205d9a-783a-438e-81cc-cbaf94e8d7da" /><br>
 ![image](https://github.com/user-attachments/assets/09bd5834-1183-450d-9de5-69c956f5293a)<br>
 <img width="956" alt="image" src="https://github.com/user-attachments/assets/2cd68738-fc79-4f9e-905f-f787e7a3fd46" /><br>
 
